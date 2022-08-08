@@ -1,6 +1,5 @@
 ﻿using NaryNode;
 
-Console.WriteLine("Build Test Tree");
 var root = new NaryNode<string>("Root");
 var a = new NaryNode<string>("A");
 var b = new NaryNode<string>("B");
@@ -22,14 +21,5 @@ c.AddChild(f);
 f.AddChild(h);
 f.AddChild(i);
 
-Console.WriteLine("Tree Output");
-Console.WriteLine(root.ToString());
-Console.WriteLine(a.ToString());
-Console.WriteLine(b.ToString());
-Console.WriteLine(c.ToString());
-Console.WriteLine(d.ToString());
-Console.WriteLine(e.ToString());
-Console.WriteLine(f.ToString());
-Console.WriteLine(g.ToString());
-Console.WriteLine(h.ToString());
-Console.WriteLine(i.ToString());
+Console.WriteLine(root);
+Console.WriteLine(a);

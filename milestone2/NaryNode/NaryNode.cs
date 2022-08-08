@@ -20,14 +20,21 @@ namespace NaryNode
 
         public override string ToString()
         {
-            StringBuilder naryString = new StringBuilder();
-            naryString.Append(Value!.ToString() + ":");
+            return ToString("");
+        }
+
+        public string ToString(string spacing)
+        {
+            var naryString = new StringBuilder(spacing + Value!.ToString() + ":");
+            spacing = spacing + "  ";
             foreach (var child in Children)
             {
-                naryString.Append(" " + child.Value!.ToString());
+                naryString.Append(Environment.NewLine);
+                naryString.Append(spacing + child.ToString(spacing));
             }
 
             return naryString.ToString();
         }
+
     }
 }

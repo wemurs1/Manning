@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace BinaryNode
 {
@@ -27,12 +28,41 @@ namespace BinaryNode
 
         public override string ToString()
         {
-            var rootString = Value!.ToString();
-            var leftString = "<null>";
-            var rightString = "<null";
-            if (LeftChild != null && LeftChild.Value != null) leftString = LeftChild.Value.ToString();
-            if (RightChild != null && RightChild.Value != null) rightString = RightChild.Value.ToString();
-            return $"{rootString}: {leftString} {rightString}";
+            return ToString("");
+        }
+
+        public string ToString(string spacing)
+        {
+            var rootString = new StringBuilder(spacing + Value!.ToString() + ":");
+            spacing = spacing + "  ";
+            if (LeftChild != null && LeftChild.Value != null)
+            {
+                if (RightChild != null && RightChild.Value != null)
+                {
+                    rootString.Append(Environment.NewLine);
+                    rootString.Append(LeftChild.ToString(spacing));
+                    rootString.Append(Environment.NewLine);
+                    rootString.Append(RightChild.ToString(spacing));
+                }
+                else
+                {
+                    rootString.Append(Environment.NewLine);
+                    rootString.Append(LeftChild.ToString(spacing));
+                    rootString.Append(Environment.NewLine);
+                    rootString.Append(spacing + "None");
+                }
+            }
+            else
+            {
+                if (RightChild != null && RightChild.Value != null)
+                {
+                    rootString.Append(Environment.NewLine);
+                    rootString.Append(spacing + "None");
+                    rootString.Append(Environment.NewLine);
+                    rootString.Append(RightChild.ToString(spacing));
+                }
+            }
+            return rootString.ToString();
         }
     }
 }

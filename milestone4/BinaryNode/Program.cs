@@ -16,24 +16,31 @@ a.AddRight(d);
 b.AddRight(e);
 e.AddLeft(f);
 
-// Find some values.
-FindValue(root, "Root");
-FindValue(root, "E");
-FindValue(root, "F");
-FindValue(root, "Q");
-
-// Find F in the B subtree.
-FindValue(b, "F");
-
-void FindValue(BinaryNode<string> node, string value)
+string result;
+result = "Preorder:      ";
+foreach (BinaryNode<string> node in root.TraversePreorder())
 {
-    var result = node.FindNode(value);
-    if (result != null)
-    {
-        Console.WriteLine($"Found {value}");
-    }
-    else
-    {
-        Console.WriteLine($"Value {value} not found");
-    }
+    result += string.Format("{0} ", node.Value);
 }
+Console.WriteLine(result);
+
+result = "Inorder:       ";
+foreach (BinaryNode<string> node in root.TraverseInorder())
+{
+    result += string.Format("{0} ", node.Value);
+}
+Console.WriteLine(result);
+
+result = "Postorder:     ";
+foreach (BinaryNode<string> node in root.TraversePostorder())
+{
+    result += string.Format("{0} ", node.Value);
+}
+Console.WriteLine(result);
+
+result = "BreadthFirst:  ";
+foreach (BinaryNode<string> node in root.TraverseBreadthFirst())
+{
+    result += string.Format("{0} ", node.Value);
+}
+Console.WriteLine(result);

@@ -28,8 +28,8 @@ namespace BinaryNode
         public override string ToString()
         {
             var rootString = Value!.ToString();
-            var leftString = "<null>";
-            var rightString = "<null";
+            var leftString = "null";
+            var rightString = "null";
             if (LeftChild != null && LeftChild.Value != null) leftString = LeftChild.Value.ToString();
             if (RightChild != null && RightChild.Value != null) rightString = RightChild.Value.ToString();
             return $"{rootString}: {leftString} {rightString}";

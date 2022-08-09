@@ -21,24 +21,24 @@ c.AddChild(f);
 f.AddChild(h);
 f.AddChild(i);
 
-// Find some values.
-FindValue(root, "Root");
-FindValue(root, "E");
-FindValue(root, "F");
-FindValue(root, "Q");
-
-// Find F in the C subtree.
-FindValue(c, "F");
-
-void FindValue(NaryNode<string> node, string value)
+string result;
+result = "Preorder:      ";
+foreach (NaryNode<string> node in root.TraversePreorder())
 {
-    var result = node.FindNode(value);
-    if (result != null)
-    {
-        Console.WriteLine($"Found {value}");
-    }
-    else
-    {
-        Console.WriteLine($"Value {value} not found");
-    }
+    result += string.Format("{0} ", node.Value);
 }
+Console.WriteLine(result);
+
+result = "Postorder:     ";
+foreach (NaryNode<string> node in root.TraversePostorder())
+{
+    result += string.Format("{0} ", node.Value);
+}
+Console.WriteLine(result);
+
+result = "BreadthFirst:  ";
+foreach (NaryNode<string> node in root.TraverseBreadthFirst())
+{
+    result += string.Format("{0} ", node.Value);
+}
+Console.WriteLine(result);

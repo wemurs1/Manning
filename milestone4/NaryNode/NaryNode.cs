@@ -46,5 +46,51 @@ namespace NaryNode
             }
             return null;
         }
+
+        public List<NaryNode<T>> TraversePreorder()
+        {
+            List<NaryNode<T>> list = new List<NaryNode<T>>();
+
+            list.Add(this);
+            foreach (var child in Children)
+            {
+                list.AddRange(child.TraversePreorder());
+            }
+
+            return list;
+        }
+
+        public List<NaryNode<T>> TraversePostorder()
+        {
+            List<NaryNode<T>> list = new List<NaryNode<T>>();
+
+            foreach (var child in Children)
+            {
+                list.AddRange(child.TraversePostorder());
+            }
+            list.Add(this);
+
+            return list;
+        }
+
+        public List<NaryNode<T>> TraverseBreadthFirst()
+        {
+            List<NaryNode<T>> list = new List<NaryNode<T>>();
+            Queue<NaryNode<T>> workQueue = new Queue<NaryNode<T>>();
+
+            workQueue.Enqueue(this);
+
+            while (workQueue.Count() != 0)
+            {
+                var node = workQueue.Dequeue();
+                list.Add(node);
+                foreach (var child in node.Children)
+                {
+                    workQueue.Enqueue(child);
+                }
+            }
+
+            return list;
+        }
     }
 }

@@ -16,5 +16,24 @@ a.AddRight(d);
 b.AddRight(e);
 e.AddLeft(f);
 
-Console.WriteLine(root);
-Console.WriteLine(a);
+// Find some values.
+FindValue(root, "Root");
+FindValue(root, "E");
+FindValue(root, "F");
+FindValue(root, "Q");
+
+// Find F in the B subtree.
+FindValue(b, "F");
+
+void FindValue(BinaryNode<string> node, string value)
+{
+    var result = node.FindNode(value);
+    if (result != null)
+    {
+        Console.WriteLine($"Found {value}");
+    }
+    else
+    {
+        Console.WriteLine($"Value {value} not found");
+    }
+}

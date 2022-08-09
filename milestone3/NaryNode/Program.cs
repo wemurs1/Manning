@@ -21,5 +21,24 @@ c.AddChild(f);
 f.AddChild(h);
 f.AddChild(i);
 
-Console.WriteLine(root);
-Console.WriteLine(a);
+// Find some values.
+FindValue(root, "Root");
+FindValue(root, "E");
+FindValue(root, "F");
+FindValue(root, "Q");
+
+// Find F in the C subtree.
+FindValue(c, "F");
+
+void FindValue(NaryNode<string> node, string value)
+{
+    var result = node.FindNode(value);
+    if (result != null)
+    {
+        Console.WriteLine($"Found {value}");
+    }
+    else
+    {
+        Console.WriteLine($"Value {value} not found");
+    }
+}

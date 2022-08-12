@@ -64,7 +64,7 @@ namespace BinaryNode
             node_j.AddRight(node_l);
 
             // Arrange and draw the tree.
-            
+            node_a.ArrangeAndDrawSubtree(mainCanvas, 10, 10);
         }
     }
 }

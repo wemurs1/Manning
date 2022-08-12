@@ -10,20 +10,20 @@ using System.Windows.Media;
 
 namespace NaryNode
 {
-    internal class NaryNode<T>
+    public class NaryNode<T>
     {
-        internal T Value { get; set; }
-        internal List<NaryNode<T>> Children;
+        public T Value { get; set; }
+        public List<NaryNode<T>> Children;
 
         // New constants and properties go here...
 
-        internal NaryNode(T value)
+        public NaryNode(T value)
         {
             Value = value;
             Children = new List<NaryNode<T>>();
         }
 
-        internal void AddChild(NaryNode<T> child)
+        public void AddChild(NaryNode<T> child)
         {
             Children.Add(child);
         }
@@ -52,7 +52,7 @@ namespace NaryNode
 
         // Recursively search this node's subtree looking for the target value.
         // Return the node that contains the value or null.
-        internal NaryNode<T> FindNode(T target)
+        public NaryNode<T> FindNode(T target)
         {
             // See if this node contains the value.
             if (Value.Equals(target)) return this;
@@ -68,7 +68,7 @@ namespace NaryNode
             return null;
         }
 
-        internal List<NaryNode<T>> TraversePreorder()
+        public List<NaryNode<T>> TraversePreorder()
         {
             List<NaryNode<T>> result = new List<NaryNode<T>>();
 
@@ -84,7 +84,7 @@ namespace NaryNode
             return result;
         }
 
-        internal List<NaryNode<T>> TraversePostorder()
+        public List<NaryNode<T>> TraversePostorder()
         {
             List<NaryNode<T>> result = new List<NaryNode<T>>();
 
@@ -99,7 +99,7 @@ namespace NaryNode
             return result;
         }
 
-        internal List<NaryNode<T>> TraverseBreadthFirst()
+        public List<NaryNode<T>> TraverseBreadthFirst()
         {
             List<NaryNode<T>> result = new List<NaryNode<T>>();
             Queue<NaryNode<T>> queue = new Queue<NaryNode<T>>();

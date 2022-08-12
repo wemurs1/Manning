@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace binary_node5
+namespace BinaryNode
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace nary_node5
+namespace NaryNode
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -3,7 +3,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace nary_node5
+namespace NaryNode
 {
     public static class Extensions
     {

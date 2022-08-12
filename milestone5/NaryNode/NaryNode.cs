@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace nary_node5
+namespace NaryNode
 {
     internal class NaryNode<T>
     {

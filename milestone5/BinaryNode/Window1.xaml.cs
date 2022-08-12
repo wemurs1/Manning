@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace binary_node5
+namespace BinaryNode
 {
     /// <summary>
     /// Interaction logic for Window1.xaml

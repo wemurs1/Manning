@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace nary_node5
+namespace NaryNode
 {
     /// <summary>
     /// Interaction logic for Window1.xaml

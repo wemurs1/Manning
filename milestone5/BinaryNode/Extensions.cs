@@ -3,7 +3,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace binary_node5
+namespace BinaryNode
 {
     public static class Extensions
     {

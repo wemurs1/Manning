@@ -8,28 +8,28 @@ using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace binary_node5
+namespace BinaryNode
 {
-    internal class BinaryNode<T>
+    public class BinaryNode<T>
     {
-        internal T Value { get; set; }
-        internal BinaryNode<T> LeftChild, RightChild;
+        public T Value { get; set; }
+        public BinaryNode<T> LeftChild, RightChild;
 
         // New constants and properties go here...
 
-        internal BinaryNode(T value)
+        public BinaryNode(T value)
         {
             Value = value;
             LeftChild = null;
             RightChild = null;
         }
 
-        internal void AddLeft(BinaryNode<T> child)
+        public void AddLeft(BinaryNode<T> child)
         {
             LeftChild = child;
         }
 
-        internal void AddRight(BinaryNode<T> child)
+        public void AddRight(BinaryNode<T> child)
         {
             RightChild = child;
         }
@@ -70,7 +70,7 @@ namespace binary_node5
 
         // Recursively search this node's subtree looking for the target value.
         // Return the node that contains the value or null.
-        internal BinaryNode<T> FindNode(T target)
+        public BinaryNode<T> FindNode(T target)
         {
             // See if this node contains the value.
             if (Value.Equals(target)) return this;
@@ -90,7 +90,7 @@ namespace binary_node5
             return null;
         }
 
-        internal List<BinaryNode<T>> TraversePreorder()
+        public List<BinaryNode<T>> TraversePreorder()
         {
             List<BinaryNode<T>> result = new List<BinaryNode<T>>();
 
@@ -103,7 +103,7 @@ namespace binary_node5
             return result;
         }
 
-        internal List<BinaryNode<T>> TraverseInorder()
+        public List<BinaryNode<T>> TraverseInorder()
         {
             List<BinaryNode<T>> result = new List<BinaryNode<T>>();
 
@@ -118,7 +118,7 @@ namespace binary_node5
             return result;
         }
 
-        internal List<BinaryNode<T>> TraversePostorder()
+        public List<BinaryNode<T>> TraversePostorder()
         {
             List<BinaryNode<T>> result = new List<BinaryNode<T>>();
 
@@ -131,7 +131,7 @@ namespace binary_node5
             return result;
         }
 
-        internal List<BinaryNode<T>> TraverseBreadthFirst()
+        public List<BinaryNode<T>> TraverseBreadthFirst()
         {
             List<BinaryNode<T>> result = new List<BinaryNode<T>>();
             Queue<BinaryNode<T>> queue = new Queue<BinaryNode<T>>();

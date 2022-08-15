@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Xml.Linq;
 
 namespace NaryNode
 {
@@ -183,12 +184,17 @@ namespace NaryNode
             // Draw the subtree's links.
             foreach (var node in Children)
             {
-                canvas.DrawLine(Center, node.Center, Brushes.Black, 1);
+                var halfMark = Center.Y + ((node.Center.Y - Center.Y) / 2);
+                Point halfwayPointParent = new Point(Center.X, halfMark);
+                canvas.DrawLine(Center, halfwayPointParent, Brushes.Black, 1);
+                Point halfwayPointChild = new Point(node.Center.X, halfMark);
+                canvas.DrawLine(node.Center, halfwayPointChild, Brushes.Black, 1);
+                canvas.DrawLine(halfwayPointParent, halfwayPointChild, Brushes.Black, 1);
                 node.DrawSubtreeLinks(canvas);
             }
 
             // Outline the subtree for debugging.
-            canvas.DrawRectangle(SubtreeBounds, null, Brushes.Red, 1);
+            // canvas.DrawRectangle(SubtreeBounds, null, Brushes.Red, 1);
         }
 
         private void DrawSubtreeNodes(Canvas canvas)

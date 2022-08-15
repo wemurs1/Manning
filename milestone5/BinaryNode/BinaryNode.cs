@@ -196,12 +196,14 @@ namespace BinaryNode
                 // Arrange the left child subtree and update
                 // child_xmin to allow room for its subtree.
                 LeftChild.ArrangeSubtree(childXmin, childYmin);
-                childXmin = childXmin + LeftChild.SubtreeBounds.X;
 
 
                 // If we also have a right child,
                 // add space between their subtrees.
-                if (RightChild != null) childXmin += X_SPACING;
+                if (RightChild != null)
+                { 
+                    childXmin = childXmin + LeftChild.SubtreeBounds.Width + X_SPACING; 
+                }
             }
 
             if (RightChild != null)
@@ -255,7 +257,7 @@ namespace BinaryNode
             }
 
             // Outline the subtree for debugging.
-            canvas.DrawRectangle(SubtreeBounds, null, Brushes.Red, 1);
+            // canvas.DrawRectangle(SubtreeBounds, null, Brushes.Red, 1);
         }
 
         private void DrawSubtreeNodes(Canvas canvas)
@@ -266,7 +268,7 @@ namespace BinaryNode
             nodeBounds.Y = Center.Y - NODE_RADIUS;
             nodeBounds.Width = 2 * NODE_RADIUS;
             nodeBounds.Height = 2 * NODE_RADIUS;
-            canvas.DrawEllipse(nodeBounds, null, Brushes.Black, 1);
+            canvas.DrawEllipse(nodeBounds, Brushes.White, Brushes.Black, 1);
             canvas.DrawLabel(
                 nodeBounds,
                 Value.ToString(),

@@ -16,6 +16,16 @@ namespace NaryNode
         public List<NaryNode<T>> Children;
 
         // New constants and properties go here...
+        private const double NODE_RADIUS = 10;
+        private const int X_SPACING = 20;
+        private const int Y_SPACING = 20;
+        private const double NODE_SPACE = 2 * NODE_RADIUS;
+
+        private Point center;
+        private Rect subtreeBounds;
+
+        public Point Center { get { return center; } }
+        public Rect SubtreeBounds { get { return subtreeBounds; } }
 
         public NaryNode(T value)
         {
@@ -122,5 +132,97 @@ namespace NaryNode
         }
 
         // New code goes here...
+        private void ArrangeSubtree(double xmin, double ymin)
+        {
+            // Calculate cy, the Y coordinate for this node.
+            // This doesn't depend on the children.
+            subtreeBounds.Y = ymin;
+            center.Y = ymin + NODE_RADIUS;
+
+            // If the node has no children, just place it here and return.
+            if (Children.Count == 0)
+            {
+                subtreeBounds.X = xmin;
+                center.X = xmin + NODE_RADIUS;
+                subtreeBounds.Width = NODE_SPACE;
+                subtreeBounds.Height = NODE_SPACE;
+                return;
+            }
+
+            // Set child_xmin and child_ymin to the
+            // start position for child subtrees.
+            double childXmin = xmin;
+            double childYmin;
+
+            // Position the child subtrees.
+            foreach (var node in Children)
+            {
+                // Arrange the child subtrees and update
+                // child_xmin to allow room for its subtree.
+                childYmin = ymin + NODE_SPACE + Y_SPACING;
+                node.ArrangeSubtree(childXmin, childYmin);
+                childXmin = childXmin + node.SubtreeBounds.Width + X_SPACING;
+            }
+
+            // Arrange this node depending on the number of children.
+            // Two children. Center this node over the child nodes.
+            // Use the subtree bounds to set our subtree bounds.
+            subtreeBounds.X = xmin;
+            subtreeBounds.Width = Children[Children.Count - 1].SubtreeBounds.X - Children[0].SubtreeBounds.X + Children[Children.Count - 1].SubtreeBounds.Width;
+            center.X = xmin + (subtreeBounds.Width / 2);
+            subtreeBounds.Height = Children[0].SubtreeBounds.Height;
+            foreach (var node in Children)
+            {
+                if (node.SubtreeBounds.Height > subtreeBounds.Height) subtreeBounds.Height = node.SubtreeBounds.Height;
+            }
+            subtreeBounds.Height += NODE_SPACE + Y_SPACING;
+        }
+
+        private void DrawSubtreeLinks(Canvas canvas)
+        {
+            // Draw the subtree's links.
+            foreach (var node in Children)
+            {
+                canvas.DrawLine(Center, node.Center, Brushes.Black, 1);
+                node.DrawSubtreeLinks(canvas);
+            }
+
+            // Outline the subtree for debugging.
+            canvas.DrawRectangle(SubtreeBounds, null, Brushes.Red, 1);
+        }
+
+        private void DrawSubtreeNodes(Canvas canvas)
+        {
+            // Draw the node.
+            Rect nodeBounds = new Rect();
+            nodeBounds.X = Center.X - NODE_RADIUS;
+            nodeBounds.Y = Center.Y - NODE_RADIUS;
+            nodeBounds.Width = 2 * NODE_RADIUS;
+            nodeBounds.Height = 2 * NODE_RADIUS;
+            canvas.DrawEllipse(nodeBounds, Brushes.White, Brushes.Black, 1);
+            canvas.DrawLabel(
+                nodeBounds,
+                Value.ToString(),
+                null,
+                Brushes.Black,
+                HorizontalAlignment.Center,
+                VerticalAlignment.Center,
+                12,
+                0);
+
+
+            // Draw the descendants' nodes.
+            foreach (var node in Children)
+            {
+                node.DrawSubtreeNodes(canvas);
+            }
+        }
+
+        public void ArrangeAndDrawSubtree(Canvas canvas, double xmin, double ymin)
+        {
+            ArrangeSubtree(xmin, ymin);
+            DrawSubtreeLinks(canvas);
+            DrawSubtreeNodes(canvas);
+        }
     }
 }

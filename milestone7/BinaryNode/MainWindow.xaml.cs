@@ -24,8 +24,9 @@ namespace BinaryNode
         {
             InitializeComponent();
         }
-        
-        SortedBinaryNode<int> Root = null;
+
+        private SortedBinaryNode<int>? Root = null;
+        private const int SENTINAL_VALUE = -1;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -33,7 +34,7 @@ namespace BinaryNode
             ValueTextBox.Focus();
 
             // Make a new sentinel root node.
-            Root = ...
+            Root = new SortedBinaryNode<int>(SENTINAL_VALUE);
 
             // Run some tests.
             // Comment this out to start with an empty tree.
@@ -46,10 +47,23 @@ namespace BinaryNode
         // Build a test tree.
         private void RunTests()
         {
-            ...
+            int[] testData = new int[] { 60, 35, 76, 21, 42, 71, 89, 17, 24, 74, 11, 23, 72, 75 };
+            foreach (int value in testData)
+            {
+                var node = new SortedBinaryNode<int>(value);
+                Root!.AddNode(node);
+            }
 
             // Find each node.
-            ...
+            foreach (var value in testData)
+            {
+                var result = Root!.FindNode(value);
+                if (result == null)
+                {
+                    MessageBox.Show("Not Found");
+                }
+            }
+
 
             MessageBox.Show("Found all nodes");
         }
@@ -61,7 +75,7 @@ namespace BinaryNode
             mainCanvas.Children.Clear();
 
             // Draw the tree.
-            Root.ArrangeAndDrawSubtree(mainCanvas, 5, 5);
+            Root!.ArrangeAndDrawSubtree(mainCanvas, 5, 5);
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
@@ -75,12 +89,12 @@ namespace BinaryNode
             else
             {
                 // Make a node to hold the value.
-                ...
+                var node = new SortedBinaryNode<int>(value);
 
                 // Try to add the node to the tree.
                 try
                 {
-                    ...
+                    Root!.AddNode(node);
                 }
                 catch (Exception ex)
                 {
@@ -107,15 +121,15 @@ namespace BinaryNode
             else
             {
                 // Try to find the value.
-                ...
+
 
                 // Display whatever we got.
-                if (node == null)
-                    MessageBox.Show(string.Format(
-                        "The value {0} is not in the tree.", value));
-                else
-                    MessageBox.Show(string.Format(
-                        "Found value {0}.", node.Value));
+                /* if (node == null)
+                     MessageBox.Show(string.Format(
+                         "The value {0} is not in the tree.", value));
+                 else
+                     MessageBox.Show(string.Format(
+                         "Found value {0}.", node.Value));*/
             }
 
             // Redraw the tree.
@@ -134,7 +148,7 @@ namespace BinaryNode
         private void resetButton_Click(object sender, RoutedEventArgs e)
         {
             // Make a new sentinel root node.
-            ...
+            Root = new SortedBinaryNode<int>(SENTINAL_VALUE);
 
             // Display the tree.
             DrawTree();

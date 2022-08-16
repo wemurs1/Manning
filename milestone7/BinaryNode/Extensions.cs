@@ -3,7 +3,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace sorted_binary_node1
+namespace BinaryNode
 {
     public static class Extensions
     {
@@ -51,8 +51,8 @@ namespace sorted_binary_node1
 
         // Add a Label to a Canvas.
         public static Label DrawLabel(this Canvas canvas,
-            Rect bounds, object content,
-            Brush background, Brush foreground,
+            Rect bounds, object? content,
+            Brush? background, Brush foreground,
             HorizontalAlignment h_align,
             VerticalAlignment v_align,
             double font_size, double padding)
@@ -86,7 +86,7 @@ namespace sorted_binary_node1
 
         // Set fill and outline drawing properties.
         public static void SetShapeProperties(this Shape shape,
-            Brush fill, Brush stroke, double stroke_thickness)
+            Brush? fill, Brush stroke, double stroke_thickness)
         {
             shape.Fill = fill;
             shape.Stroke = stroke;

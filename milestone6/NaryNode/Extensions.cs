@@ -20,7 +20,7 @@ namespace NaryNode
             line.Y1 = point1.Y;
             line.X2 = point2.X;
             line.Y2 = point2.Y;
-            line.SetShapeProperties(null, stroke, stroke_thickness);
+            line.SetShapeProperties(Brushes.White, stroke, stroke_thickness);
             canvas.Children.Add(line);
             return line;
         }

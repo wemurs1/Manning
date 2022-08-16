@@ -63,15 +63,15 @@ namespace NaryNode
 
         // Recursively search this node's subtree looking for the target value.
         // Return the node that contains the value or null.
-        public NaryNode<T> FindNode(T target)
+        public NaryNode<T>? FindNode(T target)
         {
             // See if this node contains the value.
-            if (Value.Equals(target)) return this;
+            if (Value!.Equals(target!)) return this;
 
             // Search the child subtrees.
             foreach (NaryNode<T> child in Children)
             {
-                NaryNode<T> result = child.FindNode(target);
+                NaryNode<T>? result = child.FindNode(target);
                 if (result != null) return result;
             }
 
@@ -208,8 +208,8 @@ namespace NaryNode
             canvas.DrawEllipse(nodeBounds, Brushes.White, Brushes.Black, 1);
             canvas.DrawLabel(
                 nodeBounds,
-                Value.ToString(),
-                null,
+                Value != null ? Value.ToString()! : "",
+                Brushes.White,
                 Brushes.Black,
                 HorizontalAlignment.Center,
                 VerticalAlignment.Center,

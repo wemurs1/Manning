@@ -27,43 +27,84 @@ namespace NaryNode
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Build a test tree.
-            // A
-            //         |
-            //     +---+---+
-            // B   C   D
-            //     |       |
-            //    +-+      +
-            // E F      G
-            //    |        |
-            //    +      +-+-+
-            // H      I J K
-            NaryNode<string> node_a = new NaryNode<string>("A");
-            NaryNode<string> node_b = new NaryNode<string>("B");
-            NaryNode<string> node_c = new NaryNode<string>("C");
-            NaryNode<string> node_d = new NaryNode<string>("D");
-            NaryNode<string> node_e = new NaryNode<string>("E");
-            NaryNode<string> node_f = new NaryNode<string>("F");
-            NaryNode<string> node_g = new NaryNode<string>("G");
-            NaryNode<string> node_h = new NaryNode<string>("H");
-            NaryNode<string> node_i = new NaryNode<string>("I");
-            NaryNode<string> node_j = new NaryNode<string>("J");
-            NaryNode<string> node_k = new NaryNode<string>("K");
-
-            node_a.AddChild(node_b);
-            node_a.AddChild(node_c);
-            node_a.AddChild(node_d);
-            node_b.AddChild(node_e);
-            node_b.AddChild(node_f);
-            node_d.AddChild(node_g);
-            node_e.AddChild(node_h);
-            node_g.AddChild(node_i);
-            node_g.AddChild(node_j);
-            node_g.AddChild(node_k);
+            // Build the tree.
+            NaryNode<string> generi_gloop = BuildGeneriGloopTree();
 
             // Draw the tree.
-            node_a.ArrangeAndDrawSubtree(mainCanvas, 10, 10);
+            generi_gloop.ArrangeAndDrawSubtree(mainCanvas, 10, 10);
+        }
 
+        // Build a test tree.
+        private NaryNode<string> BuildGeneriGloopTree()
+        {
+            // Build the top levels.
+            NaryNode<string> generi_gloop = new NaryNode<string>("GeneriGloop");
+            NaryNode<string> r_d = new NaryNode<string>("R & D");
+            NaryNode<string> sales = new NaryNode<string>("Sales");
+            NaryNode<string> professional_services = new NaryNode<string>("Professional\nServices");
+            NaryNode<string> applied = new NaryNode<string>("Applied");
+            NaryNode<string> basic = new NaryNode<string>("Basic");
+            NaryNode<string> advanced = new NaryNode<string>("Advanced");
+            NaryNode<string> sci_fi = new NaryNode<string>("Sci Fi");
+            NaryNode<string> inside_sales = new NaryNode<string>("Inside\nSales");
+            NaryNode<string> outside_sales = new NaryNode<string>("Outside\nSales");
+            NaryNode<string> b2b = new NaryNode<string>("B2B");
+            NaryNode<string> consumer = new NaryNode<string>("Consumer");
+            NaryNode<string> account_management = new NaryNode<string>("Account\nManagement");
+            NaryNode<string> hr = new NaryNode<string>("HR");
+            NaryNode<string> accounting = new NaryNode<string>("Accounting");
+            NaryNode<string> legal = new NaryNode<string>("Legal");
+
+            generi_gloop.AddChild(r_d);
+            generi_gloop.AddChild(sales);
+            generi_gloop.AddChild(professional_services);
+
+            professional_services.AddChild(hr);
+            professional_services.AddChild(accounting);
+            professional_services.AddChild(legal);
+
+            // Build the bottom levels.
+            // Change to 'if (true)' to build the whole tree.
+            if (true)
+            {
+                NaryNode<string> training = new NaryNode<string>("Training");
+                NaryNode<string> hiring = new NaryNode<string>("Hiring");
+                NaryNode<string> equity = new NaryNode<string>("Equity");
+                NaryNode<string> discipline = new NaryNode<string>("Discipline");
+                NaryNode<string> payroll = new NaryNode<string>("Payroll");
+                NaryNode<string> billing = new NaryNode<string>("Billing");
+                NaryNode<string> reporting = new NaryNode<string>("Reporting");
+                NaryNode<string> opacity = new NaryNode<string>("Opacity");
+                NaryNode<string> compliance = new NaryNode<string>("Compliance");
+                NaryNode<string> progress_prevention = new NaryNode<string>("Progress\nPrevention");
+                NaryNode<string> bail_services = new NaryNode<string>("Bail\nServices");
+
+                r_d.AddChild(applied);
+                r_d.AddChild(basic);
+                r_d.AddChild(advanced);
+                r_d.AddChild(sci_fi);
+
+                sales.AddChild(inside_sales);
+                sales.AddChild(outside_sales);
+                sales.AddChild(b2b);
+                sales.AddChild(consumer);
+                sales.AddChild(account_management);
+
+                hr.AddChild(training);
+                hr.AddChild(hiring);
+                hr.AddChild(equity);
+                hr.AddChild(discipline);
+
+                accounting.AddChild(payroll);
+                accounting.AddChild(billing);
+                accounting.AddChild(reporting);
+                accounting.AddChild(opacity);
+
+                legal.AddChild(compliance);
+                legal.AddChild(progress_prevention);
+                legal.AddChild(bail_services);
+            }
+            return generi_gloop;
         }
     }
 }

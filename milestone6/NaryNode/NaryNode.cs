@@ -17,10 +17,12 @@ namespace NaryNode
         public List<NaryNode<T>> Children;
 
         // New constants and properties go here...
-        private const double NODE_RADIUS = 10;
+        private const double BOX_WIDTH = 80;
+        private const double BOX_HEIGHT = 40;
+        private const double BOX_HALF_WIDTH = BOX_WIDTH / 2;
+        private const double BOX_HALF_HEIGHT = BOX_HEIGHT / 2;
         private const int X_SPACING = 20;
         private const int Y_SPACING = 20;
-        private const double NODE_SPACE = 2 * NODE_RADIUS;
 
         private Point center;
         private Rect subtreeBounds;
@@ -138,15 +140,15 @@ namespace NaryNode
             // Calculate cy, the Y coordinate for this node.
             // This doesn't depend on the children.
             subtreeBounds.Y = ymin;
-            center.Y = ymin + NODE_RADIUS;
+            center.Y = ymin + BOX_HALF_HEIGHT;
 
             // If the node has no children, just place it here and return.
             if (Children.Count == 0)
             {
                 subtreeBounds.X = xmin;
-                center.X = xmin + NODE_RADIUS;
-                subtreeBounds.Width = NODE_SPACE;
-                subtreeBounds.Height = NODE_SPACE;
+                center.X = xmin + BOX_HALF_WIDTH;
+                subtreeBounds.Width = BOX_WIDTH;
+                subtreeBounds.Height = BOX_HEIGHT;
                 return;
             }
 
@@ -160,7 +162,7 @@ namespace NaryNode
             {
                 // Arrange the child subtrees and update
                 // child_xmin to allow room for its subtree.
-                childYmin = ymin + NODE_SPACE + Y_SPACING;
+                childYmin = ymin + BOX_HEIGHT + Y_SPACING;
                 node.ArrangeSubtree(childXmin, childYmin);
                 childXmin = childXmin + node.SubtreeBounds.Width + X_SPACING;
             }
@@ -176,7 +178,7 @@ namespace NaryNode
             {
                 if (node.SubtreeBounds.Height > subtreeBounds.Height) subtreeBounds.Height = node.SubtreeBounds.Height;
             }
-            subtreeBounds.Height += NODE_SPACE + Y_SPACING;
+            subtreeBounds.Height += BOX_HEIGHT + Y_SPACING;
         }
 
         private void DrawSubtreeLinks(Canvas canvas)
@@ -201,15 +203,15 @@ namespace NaryNode
         {
             // Draw the node.
             Rect nodeBounds = new Rect();
-            nodeBounds.X = Center.X - NODE_RADIUS;
-            nodeBounds.Y = Center.Y - NODE_RADIUS;
-            nodeBounds.Width = 2 * NODE_RADIUS;
-            nodeBounds.Height = 2 * NODE_RADIUS;
-            canvas.DrawEllipse(nodeBounds, Brushes.White, Brushes.Black, 1);
+            nodeBounds.X = Center.X - BOX_HALF_WIDTH;
+            nodeBounds.Y = Center.Y - BOX_HALF_HEIGHT;
+            nodeBounds.Width = BOX_WIDTH;
+            nodeBounds.Height = BOX_HEIGHT;
+            canvas.DrawRectangle(nodeBounds, Brushes.White, Brushes.Black, 1);
             canvas.DrawLabel(
                 nodeBounds,
                 Value != null ? Value.ToString()! : "",
-                Brushes.White,
+                null,
                 Brushes.Black,
                 HorizontalAlignment.Center,
                 VerticalAlignment.Center,
@@ -229,6 +231,21 @@ namespace NaryNode
             ArrangeSubtree(xmin, ymin);
             DrawSubtreeLinks(canvas);
             DrawSubtreeNodes(canvas);
+        }
+
+        public bool IsLeaf()
+        {
+            return Children.Count == 0;
+        }
+
+        public bool IsTwig()
+        {
+            foreach (var node in Children)
+            {
+                if (!node.IsLeaf()) return false;
+            };
+
+            return !IsLeaf();
         }
     }
 }

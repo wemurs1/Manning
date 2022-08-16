@@ -52,7 +52,7 @@ namespace NaryNode
         // Add a Label to a Canvas.
         public static Label DrawLabel(this Canvas canvas,
             Rect bounds, object content,
-            Brush background, Brush foreground,
+            Brush? background, Brush foreground,
             HorizontalAlignment h_align,
             VerticalAlignment v_align,
             double font_size, double padding)

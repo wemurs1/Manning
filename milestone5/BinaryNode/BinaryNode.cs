@@ -21,14 +21,21 @@ namespace BinaryNode
         private const double NODE_RADIUS = 10;
         private const int X_SPACING = 20;
         private const int Y_SPACING = 20;
-        public Point Center { get; private set; }
-        public Rect SubtreeBounds { get; private set; }
+        private const double NODE_SPACE = 2 * NODE_RADIUS;
+
+        private Point center;
+        private Rect subtreeBounds;
+
+        public Point Center { get { return center; } }
+        public Rect SubtreeBounds { get { return subtreeBounds; } }
 
         public BinaryNode(T value)
         {
             Value = value;
             LeftChild = null;
             RightChild = null;
+            center = new Point();
+            subtreeBounds = new Rect();
         }
 
         public void AddLeft(BinaryNode<T> child)
@@ -165,23 +172,23 @@ namespace BinaryNode
         {
             // Calculate cy, the Y coordinate for this node.
             // This doesn't depend on the children.
-            SubtreeBounds.Y = ymin;
-            Center.Y = ymin + NODE_RADIUS;
+            subtreeBounds.Y = ymin;
+            center.Y = ymin + NODE_RADIUS;
 
             // If the node has no children, just place it here and return.
             if ((LeftChild == null) && (RightChild == null))
             {
-                SubtreeBounds.X = xmin;
-                SubtreeBounds.Width = 2 * NODE_RADIUS;
-                SubtreeBounds.Height = 2 * NODE_RADIUS;
-                Center.X = xmin + NODE_RADIUS;
+                subtreeBounds.X = xmin;
+                center.X = xmin + NODE_RADIUS;
+                subtreeBounds.Width = NODE_SPACE;
+                subtreeBounds.Height = NODE_SPACE;
                 return;
             }
 
             // Set child_xmin and child_ymin to the
             // start position for child subtrees.
             double childXmin = xmin;
-            double childYmin = ymin + 2 * NODE_RADIUS + Y_SPACING;
+            double childYmin = ymin + NODE_SPACE + Y_SPACING;
 
             // Position the child subtrees.
             if (LeftChild != null)
@@ -189,19 +196,20 @@ namespace BinaryNode
                 // Arrange the left child subtree and update
                 // child_xmin to allow room for its subtree.
                 LeftChild.ArrangeSubtree(childXmin, childYmin);
-                childXmin = childXmin + LeftChild.SubtreeBounds.X;
 
 
                 // If we also have a right child,
                 // add space between their subtrees.
-                if (RightChild != null) childXmin += X_SPACING;
+                if (RightChild != null)
+                { 
+                    childXmin = childXmin + LeftChild.SubtreeBounds.Width + X_SPACING; 
+                }
             }
 
             if (RightChild != null)
             {
                 // Arrange the right child subtree.
                 RightChild.ArrangeSubtree(childXmin, childYmin);
-
             }
 
             // Arrange this node depending on the number of children.
@@ -209,33 +217,26 @@ namespace BinaryNode
             {
                 // Two children. Center this node over the child nodes.
                 // Use the subtree bounds to set our subtree bounds.
-                Center.X = LeftChild.SubtreeBounds.X + LeftChild.SubtreeBounds.Width - xmin;
-                SubtreeBounds.X = xmin;
-                SubtreeBounds.Width = RightChild.SubtreeBounds.Y + RightChild.SubtreeBounds.Width - xmin;
-                SubtreeBounds.Height =
-                    max(SubtreeBounds.LeftChild.Height, SubtreeBounds.RightChild.Height) +
-                    2 * NODE_RADIUS + X_SPACING;
+                subtreeBounds.X = xmin;
+                subtreeBounds.Width =  RightChild.SubtreeBounds.X - LeftChild.SubtreeBounds.X + RightChild.SubtreeBounds.Width;
+                center.X = xmin + (subtreeBounds.Width / 2);
+                subtreeBounds.Height = Math.Max(LeftChild.SubtreeBounds.Height, RightChild.SubtreeBounds.Height) + NODE_SPACE + Y_SPACING;
             }
             else if (LeftChild != null)
             {
                 // We have only a left child.
-                Center.X = LeftChild.SubtreeBounds.X + LeftChild.SubtreeBounds.Width - xmin;
-                SubtreeBounds.X = xmin;
-                SubtreeBounds.Width = RightChild.SubtreeBounds.Y + RightChild.SubtreeBounds.Width - xmin;
-                SubtreeBounds.Height =
-                    max(SubtreeBounds.LeftChild.Height, SubtreeBounds.RightChild.Height) +
-                    2 * NODE_RADIUS + X_SPACING;
+                subtreeBounds.X = xmin;
+                center.X = xmin + (LeftChild.SubtreeBounds.Width / 2);
+                subtreeBounds.Width = LeftChild.SubtreeBounds.Width;
+                subtreeBounds.Height = LeftChild.SubtreeBounds.Height + NODE_SPACE + Y_SPACING;
             }
             else
             {
                 // We have only a right child.
-                // We have only a left child.
-                Center.X = LeftChild.SubtreeBounds.X + LeftChild.SubtreeBounds.Width - xmin;
-                SubtreeBounds.X = xmin;
-                SubtreeBounds.Width = RightChild.SubtreeBounds.Y + RightChild.SubtreeBounds.Width - xmin;
-                SubtreeBounds.Height =
-                    max(SubtreeBounds.LeftChild.Height, SubtreeBounds.RightChild.Height) +
-                    2 * NODE_RADIUS + X_SPACING;
+                subtreeBounds.X = xmin;
+                center.X = xmin + (RightChild.SubtreeBounds.Width / 2);
+                subtreeBounds.Width = RightChild.SubtreeBounds.Width;
+                subtreeBounds.Height = RightChild.SubtreeBounds.Height + NODE_SPACE + Y_SPACING;
             }
 
         }
@@ -256,18 +257,18 @@ namespace BinaryNode
             }
 
             // Outline the subtree for debugging.
-            canvas.DrawRectangle(SubtreeBounds, null, Brushes.Red, 1);
+            // canvas.DrawRectangle(SubtreeBounds, null, Brushes.Red, 1);
         }
 
         private void DrawSubtreeNodes(Canvas canvas)
         {
             // Draw the node.
             Rect nodeBounds = new Rect();
-            nodeBounds.X = Center.X;
-            nodeBounds.Y = Center.Y;
+            nodeBounds.X = Center.X - NODE_RADIUS;
+            nodeBounds.Y = Center.Y - NODE_RADIUS;
             nodeBounds.Width = 2 * NODE_RADIUS;
             nodeBounds.Height = 2 * NODE_RADIUS;
-            canvas.DrawEllipse(nodeBounds, null, Brushes.Black, 1);
+            canvas.DrawEllipse(nodeBounds, Brushes.White, Brushes.Black, 1);
             canvas.DrawLabel(
                 nodeBounds,
                 Value.ToString(),

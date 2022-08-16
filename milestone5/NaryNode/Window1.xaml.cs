@@ -61,7 +61,7 @@ namespace NaryNode
             node_g.AddChild(node_k);
 
             // Draw the tree.
-            
+            node_a.ArrangeAndDrawSubtree(mainCanvas, 10, 10);
         }
     }
 }

@@ -24,5 +24,30 @@ namespace BinaryNode
         {
             InitializeComponent();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void addButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void findButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void removeButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void resetButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

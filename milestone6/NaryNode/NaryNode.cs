@@ -23,6 +23,8 @@ namespace NaryNode
         private const double BOX_HALF_HEIGHT = BOX_HEIGHT / 2;
         private const int X_SPACING = 20;
         private const int Y_SPACING = 20;
+        private const int LEAF_OFFSET = 40;
+        private const int LINK_OFFSET = 10;
 
         private Point center;
         private Rect subtreeBounds;
@@ -155,23 +157,39 @@ namespace NaryNode
             // Set child_xmin and child_ymin to the
             // start position for child subtrees.
             double childXmin = xmin;
-            double childYmin;
+            double childYmin = ymin + BOX_HEIGHT + Y_SPACING;
+            Point leafStart = new Point();
 
             // Position the child subtrees.
+            leafStart.Y = childYmin;
+            leafStart.X = childXmin + LEAF_OFFSET;
+            int widthOffset = 0;
             foreach (var node in Children)
             {
-                // Arrange the child subtrees and update
-                // child_xmin to allow room for its subtree.
-                childYmin = ymin + BOX_HEIGHT + Y_SPACING;
-                node.ArrangeSubtree(childXmin, childYmin);
-                childXmin = childXmin + node.SubtreeBounds.Width + X_SPACING;
+                if (node.IsLeaf())
+                {
+                    node.ArrangeSubtree(leafStart.X, leafStart.Y);
+                    leafStart.Y += BOX_HEIGHT + Y_SPACING;
+                    widthOffset = LEAF_OFFSET;
+                }
+                else
+                {
+                    // Arrange the child subtrees and update
+                    // child_xmin to allow room for its subtree.
+                    node.ArrangeSubtree(childXmin, childYmin);
+                    childXmin = childXmin + node.SubtreeBounds.Width + X_SPACING;
+                }
             }
 
             // Arrange this node depending on the number of children.
             // Two children. Center this node over the child nodes.
             // Use the subtree bounds to set our subtree bounds.
             subtreeBounds.X = xmin;
-            subtreeBounds.Width = Children[Children.Count - 1].SubtreeBounds.X - Children[0].SubtreeBounds.X + Children[Children.Count - 1].SubtreeBounds.Width;
+            subtreeBounds.Width = 
+                Children[Children.Count - 1].SubtreeBounds.X - 
+                Children[0].SubtreeBounds.X + 
+                Children[Children.Count - 1].SubtreeBounds.Width + 
+                widthOffset;
             center.X = xmin + (subtreeBounds.Width / 2);
             subtreeBounds.Height = Children[0].SubtreeBounds.Height;
             foreach (var node in Children)
@@ -186,13 +204,25 @@ namespace NaryNode
             // Draw the subtree's links.
             foreach (var node in Children)
             {
-                var halfMark = Center.Y + ((node.Center.Y - Center.Y) / 2);
-                Point halfwayPointParent = new Point(Center.X, halfMark);
-                canvas.DrawLine(Center, halfwayPointParent, Brushes.Black, 1);
-                Point halfwayPointChild = new Point(node.Center.X, halfMark);
-                canvas.DrawLine(node.Center, halfwayPointChild, Brushes.Black, 1);
-                canvas.DrawLine(halfwayPointParent, halfwayPointChild, Brushes.Black, 1);
-                node.DrawSubtreeLinks(canvas);
+                if (IsTwig())
+                {
+                    var linkX = Center.X - BOX_HALF_WIDTH + LINK_OFFSET;
+                    Point linkPositionParent = new Point(linkX, Center.Y + LINK_OFFSET);
+                    Point linkPositionChild = new Point(linkX, node.Center.Y);
+                    Point childEdge = new Point(node.Center.X - BOX_HALF_WIDTH, node.Center.Y);
+                    canvas.DrawLine(linkPositionParent, linkPositionChild, Brushes.Black, 1);
+                    canvas.DrawLine(linkPositionChild, childEdge, Brushes.Black, 1);
+                }
+                else
+                {
+                    var halfMark = Center.Y + ((node.Center.Y - Center.Y) / 2);
+                    Point halfwayPointParent = new Point(Center.X, halfMark);
+                    canvas.DrawLine(Center, halfwayPointParent, Brushes.Black, 1);
+                    Point halfwayPointChild = new Point(node.Center.X, halfMark);
+                    canvas.DrawLine(node.Center, halfwayPointChild, Brushes.Black, 1);
+                    canvas.DrawLine(halfwayPointParent, halfwayPointChild, Brushes.Black, 1);
+                    node.DrawSubtreeLinks(canvas);
+                }
             }
 
             // Outline the subtree for debugging.
@@ -207,7 +237,8 @@ namespace NaryNode
             nodeBounds.Y = Center.Y - BOX_HALF_HEIGHT;
             nodeBounds.Width = BOX_WIDTH;
             nodeBounds.Height = BOX_HEIGHT;
-            canvas.DrawRectangle(nodeBounds, Brushes.White, Brushes.Black, 1);
+            var backgroundBrush = IsLeaf() ? Brushes.White : Brushes.Pink;
+            canvas.DrawRectangle(nodeBounds, backgroundBrush, Brushes.Black, 1);
             canvas.DrawLabel(
                 nodeBounds,
                 Value != null ? Value.ToString()! : "",

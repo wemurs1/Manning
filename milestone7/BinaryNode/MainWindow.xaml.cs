@@ -121,15 +121,15 @@ namespace BinaryNode
             else
             {
                 // Try to find the value.
-
+                var node = Root?.FindNode(value);
 
                 // Display whatever we got.
-                /* if (node == null)
-                     MessageBox.Show(string.Format(
-                         "The value {0} is not in the tree.", value));
-                 else
-                     MessageBox.Show(string.Format(
-                         "Found value {0}.", node.Value));*/
+                if (node == null)
+                    MessageBox.Show(string.Format(
+                        "The value {0} is not in the tree.", value));
+                else
+                    MessageBox.Show(string.Format(
+                        "Found value {0}.", node.Value));
             }
 
             // Redraw the tree.
@@ -142,7 +142,17 @@ namespace BinaryNode
 
         private void removeButton_Click(object sender, RoutedEventArgs e)
         {
-
+            // Get the entered value.
+            int value;
+            if (!int.TryParse(ValueTextBox.Text, out value) || (value < 0))
+            {
+                MessageBox.Show("The value must be a non-negative integer.");
+            }
+            else
+            {
+                Root?.RemoveNode(value);
+                DrawTree();
+            }
         }
 
         private void resetButton_Click(object sender, RoutedEventArgs e)

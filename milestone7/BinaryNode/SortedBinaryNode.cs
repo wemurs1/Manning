@@ -93,7 +93,7 @@ namespace BinaryNode
                 result = LeftChild?.FindNode(target);
             }
 
-            // We did not find the value. Return null.
+            // If did not find the value. Return null.
             return result;
         }
 
@@ -317,6 +317,88 @@ namespace BinaryNode
             {
                 throw new ArgumentException("Value already exists in tree");
             }
+        }
+
+        // Find the node that contains this value, remove it from the subtree, and return it.
+        // When this method starts, we know that this node is not the target node.
+        // Search the child subtrees.
+        public SortedBinaryNode<T>? RemoveNode(T target)
+        {
+            bool searchLeftChild;
+            SortedBinaryNode<T>? childToSearch = null;
+
+            // See which child subtree to search.
+            if (target.CompareTo(Value) < 0)
+            {
+                searchLeftChild = true;
+                childToSearch = LeftChild;
+            }
+            else
+            {
+                searchLeftChild = false;
+                childToSearch = RightChild;
+            }
+            if (childToSearch == null)
+                throw new ArgumentException(string.Format(
+                    "Value {0} is not in the tree.", target));
+
+            // See if the child node is the target node.
+            if (childToSearch.Value.Equals(target))
+            {
+                // We found the target. Clean up the subtree.
+                SortedBinaryNode<T>? newChild = childToSearch.RemoveSubtreeRoot();
+
+                // Set our new child.
+                if (searchLeftChild)
+                    LeftChild = newChild;
+                else
+                    RightChild = newChild;
+
+                return childToSearch;
+            }
+
+            // Our child is not the target node.
+            // Search its subtree.
+            return childToSearch.RemoveNode(target);
+
+        }
+
+        // Remove the root from this subtree and return the new root.
+        private SortedBinaryNode<T>? RemoveSubtreeRoot()
+        {
+            // If we are a leaf node, return null.
+            if ((LeftChild == null) && (RightChild == null)) return null;
+
+            // If we have only one child, return it.
+            if (LeftChild == null) return RightChild;
+            if (RightChild == null) return LeftChild;
+
+            // If the left child has no right child, replace this node with it.
+            if (LeftChild.RightChild == null)
+            {
+                LeftChild.RightChild = RightChild;
+                return LeftChild;
+            }
+
+            // Our left child has two children. Find the rightmost node in the left subtree.
+            // parentNode is the parent as we move down and to the right.
+            SortedBinaryNode<T> parentNode = LeftChild;
+            while (parentNode.RightChild?.RightChild != null)
+            {
+                parentNode = parentNode.RightChild;
+            }
+
+            // At this point, parentNode.RightChild is the rightmost subtree node.
+            // Remove it from its current position.
+            SortedBinaryNode<T>? rightmostNode = parentNode.RightChild;
+            parentNode.RightChild = rightmostNode?.LeftChild;
+
+            // Move the rightmost node to its new position. 
+            rightmostNode!.LeftChild = LeftChild;
+            rightmostNode.RightChild = RightChild;
+
+            // Return the rightmost node.
+            return rightmostNode;
         }
     }
 }
